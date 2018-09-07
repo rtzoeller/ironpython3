@@ -1201,6 +1201,7 @@ namespace IronPython.Modules {
                         object writtenObj;
                         if (_rawIO != null) {
                             writtenObj = _rawIO.write(context, _writeBuf);
+                            _rawIO.flush(context);
                         } else {
                             writtenObj = PythonOps.Invoke(context, _raw, "write", _writeBuf);
                         }
@@ -1608,6 +1609,7 @@ namespace IronPython.Modules {
                 try {
                     while (_writeBuf.Count > 0) {
                         int written = (int)_inner.write(context, _writeBuf);
+                        _inner.flush(context);
                         if (written > _writeBuf.Count || written < 0) {
                             throw PythonOps.IOError("write() returned incorrect number of bytes");
                         }
